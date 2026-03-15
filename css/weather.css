@@ -1,0 +1,853 @@
+/* weather.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.background-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  transition: opacity 0.5s ease;
+}
+
+/* ─── 메인 컨테이너 ─── */
+.container {
+  display: flex;
+  height: 100vh;
+  position: relative;
+}
+
+/* ─── 왼쪽 날씨 영역 ─── */
+.weather-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 60px;
+  /* 상단 여백 확보: 날짜 위에 새로고침 버튼이 안 겹치도록 */
+  padding-top: 80px;
+  color: white;
+  position: relative;
+  gap: 20px;
+}
+
+/* ✅ 날짜 - 새로고침 버튼과 겹치지 않게 왼쪽 여백 추가 */
+.date {
+  font-size: 22px;
+  opacity: 0.9;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.temperature {
+  font-size: 95px;
+  font-weight: 400;
+  line-height: 1.6;
+  animation: countUp 0.5s ease;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.weather-suggestion,
+.weather-message {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.2);
+  padding: 12px 20px;
+  border-radius: 12px;
+  animation: slideIn 0.5s ease;
+  max-width: 500px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.13);
+}
+
+.location {
+  font-size: 100px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+}
+
+.weather-icon {
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  flex-shrink: 0;
+  animation: fadeIn 0.5s ease;
+  box-shadow:
+    0 8px 16px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.weather-icon img {
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
+}
+
+/* ✅ 새로고침 버튼 - weather-main 좌상단, 날짜와 나란히 */
+.refresh-btn {
+  position: absolute;
+  top: 30px;
+  left: 60px;
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.refresh-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(180deg);
+}
+
+.refresh-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: white;
+}
+
+/* ─── 주간 날씨 ─── */
+.weekly-forecast {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 0;
+}
+
+.forecast-card {
+  flex: 1;
+  min-width: 0;
+  padding: 14px 6px;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  text-align: center;
+  color: white;
+  transition: all 0.3s ease;
+  animation: slideUp 0.5s ease;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.forecast-card:hover {
+  background: rgba(255, 255, 255, 0.28);
+  transform: translateY(-6px);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.forecast-day {
+  font-size: 12px;
+  opacity: 0.85;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.forecast-icon {
+  width: 36px;
+  height: 36px;
+  margin: 5px auto;
+}
+
+.forecast-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.forecast-temp {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* ─── 오른쪽 검색 패널 ─── */
+.search-panel {
+  width: 420px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(20px);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  /* ✅ overflow를 주지 않고 내부 scroll-body에서 처리
+     → toggle-btn(left:-50px)이 잘리지 않음 */
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-panel.hidden {
+  transform: translateX(100%);
+}
+
+/* ✅ 패널 내부 스크롤 영역 분리 - toggle-btn이 패널 밖에 있어도 overflow 잘림 없음 */
+.search-panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 35px 35px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.search-panel-body::-webkit-scrollbar {
+  width: 3px;
+}
+.search-panel-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+/* ✅ 토글 버튼 - overflow 영향 밖에서 정상 표시 */
+.toggle-btn {
+  position: absolute;
+  left: -46px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 20;
+}
+
+.toggle-btn:hover {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.toggle-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: white;
+  transition: transform 0.3s ease;
+}
+
+.search-panel.hidden .toggle-btn svg {
+  transform: rotate(180deg);
+}
+
+/* ─── 검색창 ─── */
+.search-box {
+  position: relative;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+.search-input {
+  width: 100%;
+  padding: 14px 48px 14px 18px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: white;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.search-input:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.search-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  transition: opacity 0.3s ease;
+}
+
+.search-btn:hover {
+  opacity: 0.7;
+}
+
+.search-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: rgba(255, 255, 255, 0.7);
+}
+
+/* ─── 날씨 상세 정보 ✅ 폰트/패딩 축소 → 스크롤 없이 한눈에 ─── */
+.weather-details {
+  color: white;
+}
+
+.weather-details h3 {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  opacity: 0;
+  animation: slideIn 0.5s ease forwards;
+}
+
+.detail-item:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.detail-item:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.detail-item:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.detail-item:nth-child(4) {
+  animation-delay: 0.2s;
+}
+.detail-item:nth-child(5) {
+  animation-delay: 0.25s;
+}
+.detail-item:nth-child(6) {
+  animation-delay: 0.3s;
+}
+.detail-item:nth-child(7) {
+  animation-delay: 0.35s;
+}
+.detail-item:nth-child(8) {
+  animation-delay: 0.4s;
+}
+.detail-item:nth-child(9) {
+  animation-delay: 0.45s;
+}
+
+.detail-label {
+  font-size: 14px;
+  opacity: 0.75;
+}
+
+.detail-value {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ─── 애니메이션 ─── */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ══════════════════════════════
+   반응형
+══════════════════════════════ */
+
+/* ─── 태블릿 (768px ~ 1024px) ─── */
+@media (max-width: 1024px) {
+  .search-panel {
+    width: 340px;
+  }
+  .search-panel-body {
+    padding: 28px 28px 24px;
+  }
+
+  .weather-main {
+    padding: 80px 40px 40px;
+    gap: 16px;
+  }
+
+  .date {
+    font-size: 18px;
+  }
+
+  .location {
+    font-size: 90px;
+  }
+  .temperature {
+    font-size: 90px;
+  }
+
+  .weather-message {
+    font-size: 16px;
+    padding: 10px 16px;
+  }
+
+  .refresh-btn {
+    top: 28px;
+    left: 40px;
+    width: 34px;
+    height: 34px;
+  }
+
+  .forecast-card {
+    padding: 12px 4px;
+    border-radius: 14px;
+  }
+  .forecast-day {
+    font-size: 11px;
+  }
+  .forecast-icon {
+    width: 32px;
+    height: 32px;
+  }
+  .forecast-temp {
+    font-size: 12px;
+  }
+
+  .weather-icon {
+    width: 68px;
+    height: 68px;
+  }
+  .weather-icon img {
+    width: 48px;
+    height: 48px;
+  }
+
+  .detail-label,
+  .detail-value {
+    font-size: 13px;
+  }
+  .detail-item {
+    padding: 9px 0;
+  }
+}
+
+/* ─── 모바일 (768px 이하) ─── */
+/* ✅ PC와 동일하게 좌우 row 유지, 요일 카드만 세로 배치 */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: row;
+    overflow: hidden;
+  }
+
+  .weather-main {
+    flex: 1;
+    min-width: 0;
+    padding: 70px 16px 20px;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .date {
+    font-size: 14px;
+  }
+  .location {
+    font-size: 52px;
+    gap: 10px;
+  }
+  .temperature {
+    font-size: 58px;
+    line-height: 1.4;
+  }
+
+  .weather-message {
+    font-size: 12px;
+    padding: 8px 14px;
+    max-width: 100%;
+  }
+
+  .weather-icon {
+    width: 52px;
+    height: 52px;
+  }
+  .weather-icon img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .refresh-btn {
+    top: 18px;
+    left: 16px;
+    width: 32px;
+    height: 32px;
+  }
+  .refresh-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* ✅ 요일 카드: 세로 배치 */
+  .weekly-forecast {
+    flex-direction: column;
+    gap: 6px;
+    padding: 4px 0;
+    width: 100%;
+  }
+
+  /* ✅ 카드: 가로 행 (요일 | 아이콘 | 온도) */
+  .forecast-card {
+    flex: none;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    border-radius: 12px;
+  }
+
+  .forecast-card:hover {
+    transform: none;
+  }
+
+  .forecast-day {
+    font-size: 12px;
+    margin-bottom: 0;
+    width: 40px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: unset;
+  }
+
+  .forecast-icon {
+    width: 28px;
+    height: 28px;
+    margin: 0;
+  }
+
+  .forecast-temp {
+    font-size: 12px;
+    width: 36px;
+    text-align: right;
+  }
+
+  /* ✅ 검색 패널: PC와 동일하게 오른쪽 고정 */
+  .search-panel {
+    width: 240px;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    transform: translateX(0);
+  }
+
+  .search-panel.hidden {
+    transform: translateX(100%);
+  }
+
+  .search-panel-body {
+    padding: 20px 16px;
+  }
+
+  /* ✅ 토글 버튼: PC와 동일하게 왼쪽에 위치 */
+  .toggle-btn {
+    left: -42px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .search-panel.hidden .toggle-btn svg {
+    transform: rotate(180deg);
+  }
+
+  .search-input {
+    font-size: 14px;
+    padding: 10px 40px 10px 14px;
+  }
+  .search-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .weather-details h3 {
+    font-size: 15px;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+  }
+  .detail-label,
+  .detail-value {
+    font-size: 12px;
+  }
+  .detail-item {
+    padding: 8px 0;
+  }
+}
+
+/* ─── 소형 모바일 (480px 이하) ─── */
+@media (max-width: 480px) {
+  .weather-main {
+    padding: 65px 12px 16px;
+    gap: 8px;
+  }
+
+  .date {
+    font-size: 12px;
+  }
+  .location {
+    font-size: 40px;
+    gap: 8px;
+  }
+  .temperature {
+    font-size: 46px;
+  }
+
+  .weather-message {
+    font-size: 11px;
+    padding: 7px 12px;
+  }
+
+  .weather-icon {
+    width: 44px;
+    height: 44px;
+  }
+  .weather-icon img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .refresh-btn {
+    top: 16px;
+    left: 12px;
+    width: 28px;
+    height: 28px;
+  }
+  .refresh-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* 세로 카드 소형 */
+  .forecast-card {
+    padding: 7px 10px;
+    border-radius: 10px;
+  }
+
+  .forecast-day {
+    font-size: 11px;
+    width: 34px;
+  }
+  .forecast-icon {
+    width: 22px;
+    height: 22px;
+  }
+  .forecast-temp {
+    font-size: 11px;
+    width: 30px;
+  }
+
+  /* 검색 패널 폭 더 좁게 */
+  .search-panel {
+    width: 200px;
+  }
+  .search-panel-body {
+    padding: 16px 12px;
+  }
+
+  .weather-details h3 {
+    font-size: 13px;
+  }
+  .detail-label,
+  .detail-value {
+    font-size: 11px;
+  }
+  .detail-item {
+    padding: 6px 0;
+  }
+}
+
+/* ─── 모바일: 패널 닫혔을 때 날씨 영역 전체 확장 ─── */
+@media (max-width: 768px) {
+  .weather-main.expanded {
+    flex: 1;
+    width: 100%;
+    padding: 70px 24px 24px;
+    gap: 14px;
+    justify-content: flex-start;
+  }
+
+  /*  날짜 한 줄 고정 */
+  .weather-main.expanded .date {
+    font-size: 17px;
+    white-space: nowrap;
+  }
+
+  .weather-main.expanded .location {
+    font-size: 68px;
+    gap: 14px;
+  }
+  .weather-main.expanded .temperature {
+    font-size: 76px;
+    line-height: 1.3;
+  }
+
+  /*  날씨 메시지: 한 줄 말줄임 */
+  .weather-main.expanded .weather-message {
+    font-size: 14px;
+    padding: 10px 16px;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .weather-main.expanded .weather-icon {
+    width: 60px;
+    height: 60px;
+  }
+  .weather-main.expanded .weather-icon img {
+    width: 44px;
+    height: 44px;
+  }
+
+  /*  카드: 세로 배치 유지 + 가로로 넓고 크게 */
+  .weather-main.expanded .weekly-forecast {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .weather-main.expanded .forecast-card {
+    flex: none;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    border-radius: 14px;
+  }
+
+  .weather-main.expanded .forecast-card:hover {
+    transform: none;
+  }
+
+  .weather-main.expanded .forecast-day {
+    font-size: 15px;
+    width: 50px;
+    text-align: left;
+    margin-bottom: 0;
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: unset;
+  }
+
+  .weather-main.expanded .forecast-icon {
+    width: 34px;
+    height: 34px;
+    margin: 0;
+  }
+
+  .weather-main.expanded .forecast-temp {
+    font-size: 15px;
+    width: 50px;
+    text-align: right;
+  }
+}
+
+@media (max-width: 480px) {
+  .weather-main.expanded {
+    padding: 65px 18px 18px;
+    gap: 10px;
+  }
+
+  .weather-main.expanded .date {
+    font-size: 14px;
+  }
+  .weather-main.expanded .location {
+    font-size: 52px;
+  }
+  .weather-main.expanded .temperature {
+    font-size: 60px;
+  }
+
+  .weather-main.expanded .weather-message {
+    font-size: 13px;
+    padding: 9px 14px;
+  }
+
+  .weather-main.expanded .forecast-card {
+    padding: 10px 16px;
+    border-radius: 12px;
+  }
+  .weather-main.expanded .forecast-day {
+    font-size: 13px;
+    width: 44px;
+  }
+  .weather-main.expanded .forecast-icon {
+    width: 28px;
+    height: 28px;
+  }
+  .weather-main.expanded .forecast-temp {
+    font-size: 13px;
+    width: 44px;
+  }
+}

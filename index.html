@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+    <link rel="stylesheet" href="css/weather.css" />
+  </head>
+  <body>
+    <img
+      class="background-video"
+      id="backgroundVideo"
+      src="img/w1.gif"
+      alt="background"
+    />
+
+    <div class="container">
+      <!-- 왼쪽 날씨 정보 -->
+      <div class="weather-main">
+        <!-- 새로고침 버튼 -->
+        <button class="refresh-btn" id="refreshBtn">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
+            />
+          </svg>
+        </button>
+
+        <!-- 날짜 -->
+        <div class="date" id="currentDate">Sunday, 15th 03 2026</div>
+
+        <!-- 지역 + 날씨 아이콘 -->
+        <div class="location">
+          <span id="cityName">Seoul</span>
+          <div class="weather-icon" id="weatherIcon">☀️</div>
+        </div>
+
+        <!-- 온도 -->
+        <div class="temperature" id="temperature">5°C</div>
+
+        <!-- 날씨 추천 문구 -->
+        <div class="weather-message" id="weatherMessage">
+          좋은 하루 보내세요!
+        </div>
+
+        <!-- 주간 날씨 -->
+        <div class="weekly-forecast" id="weeklyForecast"></div>
+      </div>
+
+      <!-- 오른쪽 검색 패널 -->
+      <div class="search-panel" id="searchPanel">
+        <!-- ✅ 토글 버튼: search-panel 직속 자식 (search-panel-body 밖)
+             → overflow-y:auto가 search-panel-body에만 적용되어 버튼이 잘리지 않음 -->
+        <button class="toggle-btn" id="toggleBtn">
+          <svg viewBox="0 0 24 24">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+          </svg>
+        </button>
+
+        <!-- ✅ 스크롤 영역 분리 -->
+        <div class="search-panel-body">
+          <!-- 검색창 -->
+          <div class="search-box">
+            <input
+              type="text"
+              class="search-input"
+              id="searchInput"
+              placeholder="search"
+            />
+            <button class="search-btn" id="searchBtn">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <!-- 최근 검색 기록 -->
+          <div class="recent-searches" id="recentSearches">
+            <div class="recent-list" id="recentList"></div>
+          </div>
+
+          <!-- 날씨 상세 정보 -->
+          <div class="weather-details">
+            <h3>날씨 상세정보</h3>
+
+            <div class="detail-item">
+              <span class="detail-label">최고/최저 온도</span>
+              <span class="detail-value" id="tempRange">--°C / --°C</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">체감온도</span>
+              <span class="detail-value" id="feelsLike">--°C</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">습도</span>
+              <span class="detail-value" id="humidity">--%</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">바람</span>
+              <span class="detail-value" id="wind">--km/h</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">구름</span>
+              <span class="detail-value" id="cloudy">--%</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">기압</span>
+              <span class="detail-value" id="pressure">--hPa</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">가시거리</span>
+              <span class="detail-value" id="visibility">--km</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">일출</span>
+              <span class="detail-value" id="sunrise">--:--</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">일몰</span>
+              <span class="detail-value" id="sunset">--:--</span>
+            </div>
+          </div>
+        </div>
+        <!-- /search-panel-body -->
+      </div>
+      <!-- /search-panel -->
+    </div>
+    <!-- /container -->
+
+    <script src="js/weather.js"></script>
+  </body>
+</html>
