@@ -755,9 +755,9 @@ body {
     padding: 10px 16px;
     width: 100%;
     max-width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
     box-sizing: border-box;
   }
 
